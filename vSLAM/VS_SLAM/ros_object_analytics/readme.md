@@ -109,12 +109,13 @@
   * **input_points** Specify arg "input_points" for the name of the topic publishing the [sensor_msgs::PointCloud2](http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html) messages by RGB-D camera. 
   Default is "/camera/depth_registered/points" (topic compliant with [ROS OpenNI launch](http://wiki.ros.org/openni_launch))
   
-  * **aging_th** 跟踪队列长度　Specifiy tracking aging threshold, number of frames since last detection to deactivate the tracking. Default is 16.
+  * **aging_th** 检测次数间隔　Default is 16，因为检测一次之后, 会使用 tracker 来对矩框进行跟踪，检测频率过快，会对检测产生影响
   
   * **probability_th** 跟踪置信度　Specify the probability threshold for tracking object. Default is "0.5".
   ```bash
   roslaunch object_analytics_launch analytics_movidius_ncs.launch aging_th:=30 probability_th:="0.3"
   ```
+  
 ## 节点订阅的　传感器发布的话题
   RGB图像　object_analytics/rgb ([sensor_msgs::Image](http://docs.ros.org/api/sensor_msgs/html/msg/Image.html))
 
@@ -127,7 +128,144 @@
   跟踪信息 object_analytics/tracking ([object_analytics_msgs::TrackedObjects](https://github.com/intel/ros_object_analytics/tree/master/object_analytics_msgs/msg))
 
   检测信息(2d边框)object_analytics/detection ([object_msgs::ObjectsInBoxes](https://github.com/intel/object_msgs/tree/master/msg))
+  
+## 消息类型
+object_msgs::Object
 
+      string object_name  # 物体名称 object name
+      float32 probability # 检测概率 probability of detected object
+      
+object_msgs::Objects    
+
+      std_msgs/Header header    # 消息时间戳
+      Object[] objects_vector   # 物体数组 
+      float32 inference_time_ms # 单位: millisecond, 目标检测器运行的时间
+
+object_msgs::ObjectInBox
+      
+      Object object                     # 目标检测到的物体
+      sensor_msgs/RegionOfInterest roi  # 检测框
+            uint32 x_offset // 框的左上角点
+            uint32 y_offset
+            uint32 height   // 框高度
+            uint32 width    // 框宽度
+            bool do_rectify
+
+object_msgs::ObjectInBoxes
+
+      std_msgs/Header header        # 时间戳
+      ObjectInBox[] objects_vector  # 物体边框数组
+      float32 inference_time_ms     # 检测的时间
+      
+object_analytics_nodelet::model::Object2D
+
+      const sensor_msgs::RegionOfInterest roi_;// 物体边框
+            uint32 x_offset // 框的左上角点
+            uint32 y_offset
+            uint32 height   // 框高度
+            uint32 width    // 框宽度
+            bool do_rectify
+      const object_msgs::Object object_;       // 物体名称 + 概率
+            string object_name  # 物体名称 object name
+            float32 probability # 检测概率 probability of detected object
+      
+object_analytics_msgs::ObjectInBox3D
+
+      sensor_msgs/RegionOfInterest roi      # region of interest
+            uint32 x_offset // 框的左上角点
+            uint32 y_offset
+            uint32 height   // 框高度
+            uint32 width    // 框宽度
+            bool do_rectify
+      geometry_msgs/Point32 min    # min and max locate the diagonal of a bounding-box of the detected object whose
+            float32 x // 3d点
+            float32 y
+            float32 z
+      geometry_msgs/Point32 max    # x, y and z axis parellel to the axises correspondingly in camera coordinates
+
+object_analytics_msgs::ObjectsInBoxes3D
+
+      std_msgs/Header header            # timestamp 时间戳
+      ObjectInBox3D[] objects_in_boxes  # ObjectInBox3D 数组
+
+object_analytics_nodelet::model::Object3D
+
+      sensor_msgs::RegionOfInterest roi_;
+            uint32 x_offset // 框的左上角点
+            uint32 y_offset
+            uint32 height   // 框高度
+            uint32 width    // 框宽度
+            bool do_rectify
+      geometry_msgs::Point32 min_;
+            float32 x // 3d点
+            float32 y
+            float32 z
+      geometry_msgs::Point32 max_;
+            float32 x // 3d点
+            float32 y
+            float32 z
+            
+using Relation = std::pair<Object2D, Object3D>; // 2d框 和 3d点云团 配对pair关系
+
+using RelationVector = std::vector<Relation>;   // 配对关系 数组
+      
+using Object2DVector = std::vector<Object2D>;   // 2d框数组 
+
+using Object3DVector = std::vector<Object3D>;   // 3d点云团数组 
+
+
+object_analytics_msgs::TrackedObject
+
+      # 物体 id + 2d边框 .
+      int32 id                            # object identifier
+      sensor_msgs/RegionOfInterest roi    # region of interest
+      
+object_analytics_msgs::TrackedObjects
+
+      std_msgs/Header header              # timestamp  时间戳
+      TrackedObject[] tracked_objects     # TrackedObject 目标追踪数组 
+## PCL定义新点类型 
+```c
+// PCL新定义点类型   3d点坐标 + 2d的像素坐标值 3d-2d点对
+struct PointXYZPixel
+{
+  PCL_ADD_POINT4D;// 
+  uint32_t pixel_x;// 像素值
+  uint32_t pixel_y;
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+} EIGEN_ALIGN16;  // NOLINT
+// 注册点类型
+POINT_CLOUD_REGISTER_POINT_STRUCT(PointXYZPixel,                // xyz + pixel x, y as fields
+                                  (float, x, x)                 // field x
+                                  (float, y, y)                 // field y
+                                  (float, z, z)                 // field z
+                                  (uint32_t, pixel_x, pixel_x)  // field pixel x
+                                  (uint32_t, pixel_y, pixel_y)  // field pixel y
+                                  )
+```
+
+## 点云 索引 得到其对应的像素坐标
+```c
+// XYZRGBA 点+颜色 点云  拷贝到 XYZ+像素点坐标 点云
+void ObjectUtils::copyPointCloud(const PointCloudT::ConstPtr& original, const std::vector<int>& indices,
+                                 pcl::PointCloud<PointXYZPixel>::Ptr& dest)
+{
+  pcl::copyPointCloud(*original, indices, *dest);// 拷贝 3d点坐标
+  uint32_t width = original->width;              // 相当于图像宽度
+  for (uint32_t i = 0; i < indices.size(); i++)
+  {
+    dest->points[i].pixel_x = indices[i] % width;// 列坐标
+    dest->points[i].pixel_y = indices[i] / width;// 行坐标
+  }
+}
+```
+## 获取最大最小值 std::minmax_element()
+```c
+  auto cmp_x = [](PointXYZPixel const& l, PointXYZPixel const& r) { return l.x < r.x; };// 按x值域大小 的 比较函数
+  auto minmax_x = std::minmax_element(point_cloud->begin(), point_cloud->end(), cmp_x);//std库 获取最大最小值
+  x_min = *(minmax_x.first);       // 最小值
+  x_max = *(minmax_x.second);// 最大值
+```
 
 ## object_analytics 节点分析
       1. RGBD传感器预处理分割器 splitter  
@@ -193,9 +331,12 @@
          输入: 2d图像        rgb        input_rgb 
          输入: 2d检测分割结果 detection  input_2d 
          输出: 跟踪结果　　　 tracking　　output  
-         参数: 跟踪帧队列长度: aging_th：default="30"；
-         参数: 跟踪置信度: probability_th" default="0.5"
+         参数: 跟踪次数阈值:  aging_th：default="30"； // 被跟踪次数长度，年龄？？？，跟踪的次数越多，可能就越不准确===
+         参数: 跟踪置信度:    probability_th" default="0.5"
          object_analytics_nodelet/tracker/TrackingNodelet
+         
+         检测结果的每一个roi会用来初始化一个跟踪器。之后会跟踪后面的每一帧，直到下一个检测结果来到。
+         [detection, tracking, tracking, tracking, ..., tracking] [detection, tracking, tracking, tracking, ..., tracking]
          
 ## object_analytics_visualization 可视化
       5. 3d定位可视化　visualization3d　localization

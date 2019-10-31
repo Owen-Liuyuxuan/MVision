@@ -7,6 +7,15 @@
 **光流 双目 里程计 SLAM 区别**
 ![](https://github.com/Ewenwan/MVision/blob/master/vSLAM/img/flow_stereo_vo_slam.PNG)
 
+**2d/3d 空间变换**
+![](https://github.com/Ewenwan/MVision/blob/master/vSLAM/img/2D-planar-transformations.PNG)
+
+[SLAM 开发学习资源与经验分享 ](https://github.com/Ewenwan/Lee-SLAM-source)
+
+[AR 增强现实开发资源汇总 ](https://github.com/Ewenwan/AR-Source)
+
+[VR 虚拟现实开发者必备资源汇总](https://github.com/Ewenwan/Lee-VR-Source)
+
 [视觉SLAM基础知识总结](https://blog.csdn.net/myarrow/article/details/53704339)
 
 [SLAM/VIO学习总结](https://zhuanlan.zhihu.com/p/34995102)
@@ -40,6 +49,17 @@
 [稠密相机跟踪 误差雅克比矩阵求解](http://frc.ri.cmu.edu/~kaess/vslam_cvpr14/media/VSLAM-Tutorial-CVPR14-P12-DenseVO.pdf)
 
 [LSD_slam & 激光雷达slam](http://www.cs.toronto.edu/~urtasun/courses/CSC2541/04_SLAM.pdf)
+
+[视觉SLAM滑窗 局部全局优化 Double Window Optimisation for Constant Time Visual SLAM](http://www.doc.ic.ac.uk/~ajd/Publications/strasdat_etal_iccv2011.pdf)
+
+[Visual Odometry(视觉里程计) StereoScan  viso2 ](https://github.com/Ewenwan/viso2)
+
+闭环检测:
+
+[DBoW2 二进制字符串特征 词袋模型](https://github.com/dorian3d/DBoW2)
+[DBoW3 二进制、浮点型特征 词袋模型](https://github.com/rmsalinas/DBow3)
+[FBOW  AVX,SSE and MMX指令集优化的 DBoW2 DBoW3](https://github.com/rmsalinas/fbow)
+[haloc 图像特征哈希表示 图像与图像匹配](https://github.com/srv/libhaloc)
 
 
 # 目录:
@@ -80,7 +100,7 @@
     Sparse + Indirect:非直接法（即特征点法）SLAM，
     基本套路是：特征点+匹配+优化方法求解最小化重投影误差。 
     典型代表： 
-    Mono-SLAM（MonoSLAM: Real-Time Single Camera SLAM）
+    Mono-SLAM（扩展卡尔曼滤波 更新 相机特征点法得到的位姿
     PTAM(FAST角点),
     ORB-SLAM(ORB特征点),
     以及现在大部分SLAM 
@@ -114,6 +134,20 @@
     
     间接法与直接法的区别:
 ![](https://img-blog.csdn.net/20170428164809095?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvS2V2aW5fY2M5OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+	ORB 、BRISK 等特征描述子、 LK光流法 等在 OpenCV均有实现 . 
+	另外一个重要的问题是相机和 IMU 的标定问题 , 相机的标定中对于针孔相机 OpenCV Calib 和 MATLAB 相机标定工具箱使用了标准的模型 .
+	Kalibr是一个工具箱 , 它能够标定多目相机系统、相机 IMU相对位姿和卷帘快门相机 . 
+	常用的SFM工具 有Bundler 、 OpenMVG 和 MATLAB 多视几何工具箱等 .
+	Bunlder 增量式地处理一组图像 , 提取其中的特征点进行匹配 , 完成三维重建并输出一个稀疏的场景结构 . 
+	OpenMVG 则偏重于多视几何问题的求解 .
+	优化方面 , 
+	Sophus 库为三维空间的刚体变换及李群李代数 一 个 C++ 的 实 现 . 
+	Eigen 为线性代数和 ( 稀疏 ) 矩阵的实现 , 对 LAPACK 实现了 C++ 的封装 . 
+	g2o是一个针对非线性最小 二 乘 优 化 问 题 的 C++ 代 码 实 现 . 
+	VO 问 题可以用图表示 , g2o 把非线性最小二乘问题表示为一个图或超图 , 图 的 边 可 以 连 接 多 个 节 点 ,
+	一个超图是图的拓展问题 , 
+	其他的优化实现还包括ceres.
 
 # 基础资料
 [基于视觉的 SLAM/Visual Odometry (VO) 开源资料、博客和论文列表](http://www.voidcn.com/article/p-amraedch-nh.html)

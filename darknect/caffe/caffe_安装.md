@@ -72,13 +72,44 @@
 ### 8. cudnn 新老版本 编译错误兼容性问题
 [cudnn.hpp](https://github.com/Ewenwan/MVision/blob/master/darknect/caffe/caffe_src_change/cudnn.hpp)
 
-### 9. 单机多 caffe 版本问题
+### 9. 单机多 caffe 版本问题  编译出错 error: ‘AnnotatedDatum’ does not name a type　说明没找到定义
 
 > 修改 caffe/Makefile
 
     # Complete build flags.
     # 407行附近
-    # COMMON_FLAGS += $(foreach includedir,$(INCLUDE_DIRS),-isystem $(includedir))
+    # COMMON_FLAGS += $(foreach includedir,$(INCLUDE_DIRS),-isystem $(includedir)) 修改为:
       COMMON_FLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I $(includedir))
       
-      
+## 10. 非GPU版本 
+    修改 Makefile.config： 
+    # CPU-only switch (uncomment to build without GPU support).
+    # CPU_ONLY := 1
+    
+    修改为：
+    CPU_ONLY := 1
+    
+    
+    
+# 11. protobuf 源码安装
+下载 https://github.com/protocolbuffers/protobuf/archive/v3.8.0.tar.gz
+
+解压 tar -xvf protobuf-3.8.0.tar.gz
+
+编译安装
+
+./autogen.sh 
+
+可以修改安装目录通过 
+
+ ./configure --prefix=/usr/local/protobuf
+ 
+ make
+ 
+ make check
+ 
+ make install
+
+
+ldconfig
+

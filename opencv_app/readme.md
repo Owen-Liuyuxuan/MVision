@@ -1,4 +1,14 @@
-# opencv 学习
+# opencv 学习  图像处理等
+[简单易用的图像解码库 stb_image](https://github.com/Ewenwan/stb)
+
+[linux android window 下的jpeg解码库 libjpeg-turbo](https://blog.csdn.net/gdp12315_gu/article/details/45061947)
+
+[Hands-On-Algorithms-for-Computer-Vision 代码](https://github.com/PacktPublishing/Hands-On-Algorithms-for-Computer-Vision)
+
+[OpenCV 3 Computer Vision Application Programming Cookbook, Third Edition](https://github.com/PacktPublishing/OpenCV3-Computer-Vision-Application-Programming-Cookbook-Third-Edition)
+[计算机视觉OpenCV实现 csdn专栏](https://blog.csdn.net/column/details/computer-vision.html?&page=3)
+
+[机器视觉与计算机视觉](https://www.cnblogs.com/ironstark/category/745953.html)
 
 [opencv代码实验](https://github.com/Ewenwan/OpenCV_Test)
 
@@ -10,6 +20,7 @@
 
 [OpenCV + 数字成像](http://antkillerfarm.github.io/ai/2016/07/19/opencv.html)
 
+[OpenCV-OpenGL--Reconstuction3d 三维重建](https://github.com/Ewenwan/OpenCV-OpenGL--Reconstuction3d)
 
 [图像处理理论（一）——直方图, 二值化, 滤波基础](http://antkillerfarm.github.io/graphics/2016/04/30/graphics.html)
 
@@ -30,6 +41,13 @@
 
 
 ## window下安装
+      下载地址 https://sourceforge.net/projects/opencvlibrary/files/opencv-win/
+      
+      python 下 opencv安装 https://www.cnblogs.com/ncuhwxiong/p/7439604.html
+      安装 Numpy  https://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
+      安装 opencv  https://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv
+      使用 pip install  安装whl
+      
       1、系统环境变量设置
       动态链接库配置
       计算机 -> 右键属性 ->高级系统设置 -> 高级标签  -> 最下边 环境变量
@@ -104,7 +122,7 @@
       mkdir build
       cd build
       cmake
-      make -j3
+      make -j2
       sudo make install
 
       安装依赖项
@@ -113,6 +131,24 @@
       编译依赖 sudo apt-get install build-essential
       必须     sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
       可选     sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+      
+      
+       安装附加模块 opencv_contrib
+          git clone https://github.com/opencv/opencv_contrib.git
+          和 opencv 一起安装
+          $ cd <opencv 编译文件夹
+          $ cmake -DOPENCV_EXTRA_MODULES_PATH=<opencv_contrib 目录>/modules <opencv_source_directory(例如上一级 ..)>
+          $ make -j3
+	  sudo make install
+    
+[3.2安装参考 好好](https://github.com/CoderEugene/opencv3.2_CMake/tree/5175fc1b0a78e79831993ed4f5021bc2b0a656db)
+
+	LAPACKE_H_PATH-NOTFOUND/lapacke.h: 没有那个文件或目录
+	安装 lapacke : sudo apt-get install liblapacke-dev checkinstall
+         修改文件：
+	build/opencv_lapack.h ： 
+	   #include "LAPACKE_H_PATH-NOTFOUND/lapacke.h"  >>>  #include "lapacke.h"
+      
 ## 问题1 
       安装OpenCv 3.1的过程中要下载ippicv_linux_20151201，由于网络的原因，这个文件经常会下载失败。
       下载　  ippicv_linux_20151201

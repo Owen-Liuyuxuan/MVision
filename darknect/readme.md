@@ -1,7 +1,16 @@
 # yolo darknet
 
+[YOLO_v3 TF 加强版 GN FC DA ](https://github.com/Stinky-Tofu/YOLO_V3)
+
+[caffe 实现  MobileNet-YOLOv3 ](https://github.com/Ewenwan/MobileNet-YOLO)
+
+[Translate darknet to tensorflow darkflow](https://github.com/thtrieu/darkflow)
+
 [FOR Raspberry Pi 3 ](https://github.com/digitalbrain79/darknet-nnpack)
 
+[基于YOLO的3D目标检测：YOLO-6D bounding box在2D图像上的投影的1个中心点和8个角点 + 置信度 + 类别C](https://zhuanlan.zhihu.com/p/41790888)
+
+[yolov1 赛灵思（Xilinx） ZCU102 SoC 16bit量化 x86 / ARM  NEON优化加速](https://github.com/Ewenwan/YOLO_quantize)
 
 * YOLO-v1 论文翻译
 [You Only Look Once: Unified, Real-Time Object Detection](https://arxiv.org/abs/1506.02640)
@@ -13,8 +22,9 @@
 [中文版](http://noahsnail.com/2017/12/26/2017-12-26-YOLO9000,%20Better,%20Faster,%20Stronger%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E7%89%88/)
 [中英文对照](http://noahsnail.com/2017/12/26/2017-12-26-YOLO9000,%20Better,%20Faster,%20Stronger%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E2%80%94%E2%80%94%E4%B8%AD%E8%8B%B1%E6%96%87%E5%AF%B9%E7%85%A7/)
 
+[自动标注图片工具 A self automatically labeling tool ](https://github.com/eric612/AutoLabelImg)
 
-  ## 0.项目主页
+## 0.项目主页
 [darknet yolov3](https://pjreddie.com/darknet/yolo/)
 
 [darknet yolov3 from scratch in PyTorch 详细](https://blog.paperspace.com/how-to-implement-a-yolo-object-detector-in-pytorch/)
@@ -24,6 +34,9 @@
 [darknet yolov2](https://pjreddie.com/darknet/yolov2/)
 
 [darknet yolov1](https://pjreddie.com/darknet/yolov1/)
+
+[YOLOv3_SpringEdition  C++ Windows and Linux interface library. (Train,Detect both) ](https://github.com/Ewenwan/YOLOv3_SpringEdition)
+
 
 # yolov3改进
 ## 1. 多级预测(多尺度预测)

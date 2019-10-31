@@ -1,6 +1,23 @@
 # MVision　Machine Vision 机器视觉
+[AI算法工程师手册 数学基础 统计学习 深度学习 自然语言处理 工具使用](http://www.huaxiaozhuan.com/)
+
+[AI 安全数据科学和算法 ](https://github.com/Ewenwan/AI-Security-Learning)
+
+[澳大利亚机器人视觉研究中心](https://www.roboticvision.org/)
+
+[NIPS Neural Information Processing Systems](https://papers.nips.cc/)
+
+[icml Proceedings of Machine Learning Research PMLR](http://proceedings.mlr.press/index.html)
+
+[ICDM IEEE International Conference on Data Mining](http://www.cs.uvm.edu/~icdm/)
 
 [Computer Vision and Pattern Recognition arxiv.org 最新提交的论文](https://arxiv.org/list/cs.CV/recent)
+
+[papercept 会议论文投递](https://controls.papercept.net/conferences/scripts/start.pl)
+
+[easychair 会议论文投递](https://easychair.org/my/roles.cgi?welcome=1)
+
+[DBLP 计算机核心技术文献](https://dblp.uni-trier.de/)
 
 [技术刘 增强现实、图像识别、深度学习、机器人](http://liuxiao.org/category/robots/)
 
@@ -96,7 +113,18 @@
 
 [Kalibr calibration toolbox 标定多目相机系统、相机 IMU 相 对 位 姿 和 卷 帘 快 门 相 机  ](https://github.com/Ewenwan/kalibr)
 
-[]()
+
+[霍夫森林(Hough Forest) 随机森林和霍夫投票在计算机视觉中的应用，可以用在物体检测，跟踪和动作识别](https://github.com/Ewenwan/HoughForest)
+
+[百度自动驾驶开源框架 apollo](https://github.com/Ewenwan/apollo)
+
+[交通标志检测识别 数据集](https://cg.cs.tsinghua.edu.cn/traffic-sign/)
+
+[Halcon 使用参考](https://blog.csdn.net/maweifei/article/details/52613392)
+
+[有代码的论文](https://github.com/Ewenwan/pwc)
+
+[图像处理基本算法代码](http://www.cnblogs.com/Imageshop/p/3430742.html)
 
 # 无人驾驶的各个方面知识
 [参考](https://blog.csdn.net/qq_40027052/article/details/78485120)
@@ -185,71 +213,136 @@
         主要研究如何建立精准的环境信息图。比较有趣的一些研究包括使用低空无人机去创建给无人驾驶使用的地图，
         以及通过停车场监控摄像头建立辅助自动泊车的地图等等。
 
+## 无人驾驶面试知识点
+[参考博客](https://blog.csdn.net/xiangxianghehe/article/details/82528180)
+```
+1. 深度学习相关
+    机器学习和深度学习的区别，各自适用于什么问题
+    CNN基本原理，CNN的那些部分是神经元
+    CNN去掉激活函数会怎么样
+    介绍YOLO/SSD/RCNN/Faster-RCNN/Mask-RCNN算法
+    YOLO v1/v2/v3 区别细节，SSD如何改进有思考过嘛，知道DSSD和FSSD嘛
+    是否了解RPN，RoI pooling,和RoIAlign
+    YOLO/SSD里面有全连接层嘛
+    YOLO/SSD算法思想如何用到三维点云目标检测
+    目标检测算法one-stage和two-stage区别点在哪里
+    two-stage算法相比于one-stage有何优势
+    单张图片物体越多越密集，YOLO/SSD/Faster-RCNN中计算量是否也随着增加
+    CVPR/ECCV 2018 最新目标检测算法有了解过嘛
+    如何理解上采样，和下采样的区别是什么
+    上采样(UNSampling)与上池化(UnPooling)区别
+    全连接层理论上可以替代卷积层嘛
+    神经网络里面可以用什么方法替换掉pooling
+    神经网络提取特征的方式有哪些
+    介绍下你了解的轻量级CNN模型
+    网络模型压缩方面的剪枝，量化和二值化编码
+    基于视频的C3D三维网络模型有听说过嘛
+    2.5D卷积呢
+    什么是空洞卷积，什么是反卷积，作用是什么
+    如何一张RGB图片生成三维模型
+    PNG/JPG存储图像的原理
+    global average pooling 和average pooling区别
+    FPN的原理，为什么不同尺度feature map融合会有效果提升
+    无监督/半监督深度学习有了解过嘛
+    GAN的原理
+    基于RGB图的深度信息估计有了解过嘛
+    MobileNet V1/V2区别
+    ShuffleNet和SqueezeNet
+    模型量化方法有哪些
+    双线性插值，量化对齐
+    Relu为什么比sigmod好
+    目标识别算法常用评测方式
+    IOU和mAP，AUC和ROC分别是什么
+    介绍下常见损失函数，softmax一般和哪个激活函数使用
+    介绍下PointNet/PointNet++/VoxelNet以及他们的优缺点
+    PointCNN介绍一下
+    旋转矩阵是什么，有什么性质，PointNet中T-Net旋转矩阵的损失函数如何设计
+    如何计算旋转矩阵
+    介绍下机器学习和深度学习中常见的参数类算法和非参数类算法
+    随机梯度下降
+    神经网络训练如何解决过拟合和欠拟合
+    L1正则化和L2正则化区别，具体有何用途
+    L1正则化相比于 L2正则化为何具有稀疏解
+    
+2. C++开发相关
+    c++常见容器，vector容器capacity和size区别，如何动态增长
+    vector遍历有哪几种方式（尽可能多）
+    cv:Mat 有几种访问方式
+    map容器增删改查，和unorder_map区别，map底层如何实现
+    c++智能指针
+    c++14/17新特性
+    c++和c语言区别
+    c++如何实现多态，有几种方式，动态多态和静态多态区别
+    模板了解嘛
+    c++继承多态
+    c++深拷贝与浅拷贝
+    拷贝构造函数和委托构造函数
+    c++面向对象
+    右值引用，move语义，完美转发
+    emplace_back和push_back区别
+    Eigen库了解嘛
+    如何实现一个c++的单例模式
+    内联函数和宏的区别
+    如何实现一个只在堆或者栈上初始化的类
+    如何查找容器内所有符合条件的元素
+    
+3. Python开发相关
+    list tuple区别
+    生成器和迭代器
+    Python类的定义和实例化方法
+    
+4. 数据结构相关
+    红黑树结构，查找时间复杂度
+    堆排序的时间复杂度
+    Top K排序
+    如何用O(1)复杂度查找到stack里面的最小值
+    八皇后
+    C++自己实现一个队列
+    数组和链表的区别
+    什么是kd-tree，如何实现
+    青蛙跳台阶的递归和非递归实现
+    
+5. 操作系统相关
+    如何调试栈溢出
+    计算机内存堆和栈的区别
+    线程同步的方式，互斥锁和信号量的对比
+    进程和线程的区别
+    图片存储原理介绍一下
+    
+6. 深度学习框架相关
+    Tensorflow结构框架，如何用Tensorflow实现一个反向求梯度
+    Tensorflow如何合并两个Tensor
+    caffe和Pytorch了解嘛
+    caffe和Tensorflow区别在什么地方
+    Tensorflow serving和TensorRT有了解过嘛
+    caffe结构框架
+    
+7. 视觉SLAM相关
+    SLAM主要分为哪几个模块
+    ORB-SLAM2的优缺点分析，如何改进
+    ORB和FAST对比
+    BA和卡尔曼滤波
+    ORB-SLAM2的三个线程是什么
+    ORB-SLAM2的定位如何实现
+    如何理解ORB-SLAM2的图优化
+    结构光、TOF、双目视觉原理
+    直接法、半直接法、特征点法区别与联系
+    Apollo的感知模块原理
+    Apollo的2D和3D跟踪
+    如何求解旋转矩阵
+    如果只有32线雷达，个数不限，能实现360度视角覆盖吗，如何实现，64线呢？
+```
+
 ##  公司
 [视觉领域的部分国内公司](http://www.ipcv.org/cvcom/)
 ###  初创公司：
-[图普科技](http://www.tuputech.com/)
-
-[Face++](http://www.faceplusplus.com.cn/)
-
-[Linkface](http://www.linkface.cn/index.html)
-
-[Minieye](http://www.minieye.cc/cn/)
-
-[知图Cogtu](http://www.cogtu.com/?lang=zh)
-
-[商汤科技Sensetime](http://www.sensetime.com/cn)
-
-[亮风台Hiscene](http://www.hiscene.com/)
-
-[掌赢科技](http://www.zhangying.mobi/index.html)
-
-[格灵深瞳DeepPG](http://www.deepglint.com/)
-
-[凌感科技usens](http://www.lagou.com/gongsi/j114187.html)
-
-[图森TuSimple](http://www.tusimple.com/)
-
-[中科视拓Seetatech(山世光)](http://www.seetatech.com/)
-
-[第四范式](https://www.4paradigm.com/product/prophet)
+[图普科技](http://www.tuputech.com/)---[Face++](http://www.faceplusplus.com.cn/)---[Linkface](http://www.linkface.cn/index.html)---[Minieye](http://www.minieye.cc/cn/)---[知图Cogtu](http://www.cogtu.com/?lang=zh)---[商汤科技Sensetime](http://www.sensetime.com/cn)---[亮风台Hiscene](http://www.hiscene.com/)---[掌赢科技](http://www.zhangying.mobi/index.html)---[格灵深瞳DeepPG](http://www.deepglint.com/)---[凌感科技usens](http://www.lagou.com/gongsi/j114187.html)---[图森TuSimple](http://www.tusimple.com/)---[中科视拓Seetatech(山世光)](http://www.seetatech.com/)---[第四范式](https://www.4paradigm.com/product/prophet)
 
 ### 上市公司：
-
-[百度DL实验室](http://idl.baidu.com/)
-
-[腾讯优图](http://youtu.qq.com/)
-
-[阿里高德](http://www.newsmth.net/nForum/#!article/Career_Upgrade/429476)
-
-[暴风魔镜](http://www.newsmth.net/nForum/#!article/Career_PHD/225254)
-
-[搜狗](http://www.newsmth.net/nForum/#!article/Career_PHD/224449)
-
-[乐视tv](http://www.newsmth.net/nForum/#!article/Career_PHD/222651)
-
-[奇虎360](http://www.newsmth.net/nForum/#!article/Career_PHD/222379)
-
-[京东实验室](http://www.newsmth.net/nForum/#!article/Career_PHD/223133/a>)
-
-[阿里巴巴](http://www.newsmth.net/nForum/#!article/Career_PHD/222007)
-
-[联想研究院](http://www.newsmth.net/nForum/#!article/Career_PHD/220225)
-
-[华为研究院](http://www.newsmth.net/nForum/#!article/Career_PHD/225976)
+[百度DL实验室](http://idl.baidu.com/)---[腾讯优图](http://youtu.qq.com/)---[阿里高德](http://www.newsmth.net/nForum/#!article/Career_Upgrade/429476)---[暴风魔镜](http://www.newsmth.net/nForum/#!article/Career_PHD/225254)---[搜狗](http://www.newsmth.net/nForum/#!article/Career_PHD/224449)---[乐视tv](http://www.newsmth.net/nForum/#!article/Career_PHD/222651)---[奇虎360](http://www.newsmth.net/nForum/#!article/Career_PHD/222379)---[京东实验室](http://www.newsmth.net/nForum/#!article/Career_PHD/223133/a>)---[阿里巴巴](http://www.newsmth.net/nForum/#!article/Career_PHD/222007)---[联想研究院](http://www.newsmth.net/nForum/#!article/Career_PHD/220225)---[华为研究院](http://www.newsmth.net/nForum/#!article/Career_PHD/225976)
 
 ### 知名外企：
-[佳能信息](http://www.newsmth.net/nForum/#!article/Career_PHD/222548)
-
-[索尼研究院](http://www.newsmth.net/nForum/#!article/Career_PHD/223437)
-
-[富士通研发中心](http://www.newsmth.net/nForum/#!article/Career_PHD/220654)
-
-[微软研究院](https://careers.microsoft.com/?rg=cn)
-
-[英特尔研究院](http://www.newsmth.net/nForum/#!article/Career_PHD/221175)
-
-[三星研究院](http://www.yingjiesheng.com/job-001-742-124.html)
+[佳能信息](http://www.newsmth.net/nForum/#!article/Career_PHD/222548)---[索尼研究院](http://www.newsmth.net/nForum/#!article/Career_PHD/223437)---[富士通研发中心](http://www.newsmth.net/nForum/#!article/Career_PHD/220654)---[微软研究院](https://careers.microsoft.com/?rg=cn)---[英特尔研究院](http://www.newsmth.net/nForum/#!article/Career_PHD/221175)---[三星研究院](http://www.yingjiesheng.com/job-001-742-124.html)
 
 
 
@@ -316,7 +409,6 @@
 [视觉SLAM](http://www.ipcv.org/on-visual-slam/)
 
 [Self-augmented Convolutional Neural Networks](https://github.com/msraig/self-augmented-net)
-
 
 [运动估计 motion estimation](http://www.ipcv.org/on-motion-estimation/)
 

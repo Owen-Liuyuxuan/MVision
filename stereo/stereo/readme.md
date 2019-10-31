@@ -1,8 +1,14 @@
 # 双目相机 算法
-[ ADCensus, SGBM, BM算法参考](https://github.com/DLuensch/StereoVision-ADCensus)
+[双目立体视觉算法  ADCensus, SGBM, BM算法参考](https://github.com/DLuensch/StereoVision-ADCensus)
 [ELAS论文解析](https://www.cnblogs.com/sinbad360/p/6883623.html)
 [ELAS代码](https://github.com/Ewenwan/ELAS)
 [棋盘格](https://github.com/DLuensch/StereoVision-ADCensus/tree/master/Documents/chessboards)
+
+[双目视差图 精细化调整算法](https://github.com/Ewenwan/FDR)
+
+[DynamicStereo 算法较多 参考](https://github.com/Ewenwan/DynamicStereo)
+
+[双目算法、光流算法、分层深度图估计算法 ](https://github.com/Ewenwan/ParallelFusion)
 
 ## 双目相机 矫正 
     * 用法 ./Stereo_Calibr -w=6 -h=8  -s=24.3 stereo_calib.xml   
@@ -25,7 +31,7 @@
      r^2 = x^2+y^2
     
 ### 投影公式 世界坐标点 到 相机像素坐标系下
-                                                  | Xw|
+                                                    | Xw|
     *  | u|     |fx  0   ux 0|     |    R   T  |    | Yw|
     *  | v| =   |0   fy  uy 0|  *  |           | *  | Zw| = M*W
     *  | 1|     |0   0  1   0|     |   0 0  0 1|    | 1 |
@@ -396,6 +402,56 @@
             else if(alg==STEREO_SGBM)  sgbm->setMode(StereoSGBM::MODE_SGBM);
             else if(alg==STEREO_3WAY)   sgbm->setMode(StereoSGBM::MODE_SGBM_3WAY);
         各参数设置如BM方法，速度比较快，320*240的灰度图匹配时间为78ms，
+
+         第二部分：opencvSGBM算法的参数含义及数值选取
+
+         一 预处理参数
+
+         1：preFilterCap：水平sobel预处理后，映射滤波器大小。默认为15
+
+         int ftzero =max(params.preFilterCap, 15) | 1;
+
+         opencv测试例程test_stereomatching.cpp中取63。
+
+         二 代价参数
+
+         2：SADWindowSize:计算代价步骤中SAD窗口的大小。由源码得，此窗口默认大小为5。
+
+         SADWindowSize.width= SADWindowSize.height = params.SADWindowSize > 0 ?params.SADWindowSize : 5;
+
+         注：窗口大小应为奇数，一般应在3x3到21x21之间。
+
+         3：minDisparity：最小视差，默认为0。此参数决定左图中的像素点在右图匹配搜索的起点。int 类型
+
+         4：numberOfDisparities：视差搜索范围，其值必须为16的整数倍（CV_Assert( D % 16 == 0 );）。最大搜索边界= numberOfDisparities+ minDisparity。int 类型
+
+         三 动态规划参数
+
+         动态规划有两个参数，分别是P1、P2，它们控制视差变化平滑性的参数。P1、P2的值越大，视差越平滑。P1是相邻像素点视差增/减 1 时的惩罚系数；P2是相邻像素点视差变化值大于1时的惩罚系数。P2必须大于P1。需要指出，在动态规划时，P1和P2都是常数。
+
+         5：opencv测试例程test_stereomatching.cpp中，P1 = 8*cn*sgbm.SADWindowSize*sgbm.SADWindowSize;
+
+         6：opencv测试例程test_stereomatching.cpp中，P2 = 32*cn*sgbm.SADWindowSize*sgbm.SADWindowSize;
+
+         四：后处理参数
+
+         7：uniquenessRatio：唯一性检测参数。对于左图匹配像素点来说，先定义在numberOfDisparities搜索区间内的最低代价为mincost，次低代价为secdmincost。如果满足
+
+         即说明最低代价和次第代价相差太小，也就是匹配的区分度不够，就认为当前匹配像素点是误匹配的。
+
+         opencv测试例程test_stereomatching.cpp中，uniquenessRatio=10。int 类型
+
+         8：disp12MaxDiff：左右一致性检测最大容许误差阈值。int 类型
+
+         opencv测试例程test_stereomatching.cpp中，disp12MaxDiff =1。
+
+         9：speckleWindowSize：视差连通区域像素点个数的大小。对于每一个视差点，当其连通区域的像素点个数小于speckleWindowSize时，认为该视差值无效，是噪点。
+
+         opencv测试例程test_stereomatching.cpp中，speckleWindowSize=100。
+
+         10：speckleRange：视差连通条件，在计算一个视差点的连通区域时，当下一个像素点视差变化绝对值大于speckleRange就认为下一个视差像素点和当前视差像素点是不连通的。
+
+         opencv测试例程test_stereomatching.cpp中，speckleWindowSize=10。
 
 ### 第三种为GC方法：
         该方法速度超慢，但效果超好。

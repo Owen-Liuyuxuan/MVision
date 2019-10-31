@@ -37,6 +37,9 @@
 
 [改进 DSSD : Deconvolutional Single Shot Detector 反卷积后再多尺度预测](https://arxiv.org/pdf/1701.06659.pdf)
 
+
+[ssd-6d](https://github.com/Ewenwan/ssd-6d/blob/master/README.md)
+
 # VGG16 结构图 13个卷积层+3个全链接层=16
 ```asm
 输入图像  3*300*300
@@ -167,20 +170,26 @@ somtmax 指数映射回归分类
          ---------------正则化层-------------------
          conv4_3_norm               Normalize    scale_filler  value: 20
                                   
-         conv4_3_norm_mbox_loc      Convolution  输入 conv4_3_norm 512*38*38
-                                     3*3*512*16  16通道输出   --->  16*38*38
-         conv4_3_norm_mbox_loc_perm Permute      0  2  3  1
-         conv4_3_norm_mbox_loc_flat Flatten      axis: 1 
+         conv4_3_norm_mbox_loc      Convolution  输入 conv4_3_norm 512*38*38     边框坐标======
+                                     3*3*512*16  16通道输出   --->  16*38*38      (4种边框 * 4个参数= 16)
+         conv4_3_norm_mbox_loc_perm Permute      0  2  3  1   交换caffe blob中的数据维======
+                                            N C H W ----> N H W C
+                                            0 1 2 3 ----> 0 2 3 1
+         conv4_3_norm_mbox_loc_flat Flatten      axis: 1      摊平成一维======
          
          
-         conv4_3_norm_mbox_conf       Convolution    输入 conv4_3_norm 512*38*38
-                                                     3*3*512*84  84通道输出   --->  84*38*38
+         conv4_3_norm_mbox_conf       Convolution    输入 conv4_3_norm 512*38*38  置信度=====
+                                                     3*3*512*84  84通道输出   --->  84*38*38 (4种边框*21类=84) 
          conv4_3_norm_mbox_conf_perm  Permute        0  2  3  1
          conv4_3_norm_mbox_conf_flat  Flatten        axis: 1 
          
          
-         conv4_3_norm_mbox_priorbox   PriorBox      输入 conv4_3_norm 512*38*38
+         conv4_3_norm_mbox_priorbox   PriorBox      输入 conv4_3_norm 512*38*38    预设框===
                                                     输入 data
+                                                    输出 [1, 2, 4*num_priorbox]大小的prior box blob，
+                                                        其中2个channel分别存储prior box的4个点坐标 和 对应的4个variance，
+                                                        是一种bounding regression中的权重。
+                                                        
                         min_size: 30.0
                         max_size: 60.0
                         aspect_ratio: 2
@@ -195,12 +204,12 @@ somtmax 指数映射回归分类
               
   2.  本层 预测框数量 19*19*6         
           输入为  fc7      输入  1024*19*19  
-          fc7_mbox_loc       Convolution   3*3*1024*24  24通道输出   --->  24*19*19
+          fc7_mbox_loc       Convolution   3*3*1024*24  24通道输出   --->  24*19*19   (6种边框 * 4个参数= 24)
           fc7_mbox_loc_perm  Permute       0  2  3  1
           fc7_mbox_loc_flat  Flatten       axis: 1
           
           输入为  fc7      输入  1024*19*19
-          fc7_mbox_conf      Convolution   3*3*24*126  126通道输出   --->  126*19*19
+          fc7_mbox_conf      Convolution   3*3*24*126  126通道输出   --->  126*19*19  (6种边框*21类=126) 
           fc7_mbox_conf_perm Permute       0  2  3  1
           fc7_mbox_conf_flat Flatten       axis: 1
           
@@ -223,11 +232,11 @@ somtmax 指数映射回归分类
           
 3.  本层 预测框数量 10*10*6
           输入 conv6_2            512*10*10
-          conv6_2_mbox_loc        Convolution   3*3*512*24  24通道输出   --->  24*10*10
+          conv6_2_mbox_loc        Convolution   3*3*512*24  24通道输出   --->  24*10*10  (6种边框 * 4个参数= 24)
           conv6_2_mbox_loc_perm   Permute       0  2  3  1
           conv6_2_mbox_loc_flat   Flatten       axis: 1   
           
-          conv6_2_mbox_conf       Convolution   3*3*24*126  126通道输出   --->  126*10*10
+          conv6_2_mbox_conf       Convolution   3*3*24*126  126通道输出   --->  126*10*10 (6种边框*21类=126) 
           conv6_2_mbox_conf_perm  Permute       0  2  3  1
           conv6_2_mbox_conf_flat  Flatten       axis: 1
           
@@ -248,11 +257,11 @@ somtmax 指数映射回归分类
               
  4.  本层 预测框数量 5*5*6
           输入 conv7_2           256*5*5
-          conv7_2_mbox_loc       Convolution  3*3*256*24  24通道输出   --->  24*5*5
+          conv7_2_mbox_loc       Convolution  3*3*256*24  24通道输出   --->  24*5*5       (6种边框 * 4个参数= 24)
           conv7_2_mbox_loc_perm  Permute       0  2  3  1 
           conv7_2_mbox_loc_flat  Flatten       axis: 1   
           
-          conv7_2_mbox_conf       Convolution   3*3*24*126  126通道输出   --->  126*5*5
+          conv7_2_mbox_conf       Convolution   3*3*24*126  126通道输出   --->  126*5*5   (6种边框*21类=126) 
           conv7_2_mbox_conf_perm  Permute       0  2  3  1
           conv7_2_mbox_conf_flat  Flatten       axis: 1
           
@@ -272,12 +281,12 @@ somtmax 指数映射回归分类
                         
 5.     本层 预测框数量 5*5*4
           输入 conv8_2           256*3*3                             
-          conv8_2_mbox_loc       Convolution  3*3*256*16  16通道输出   --->  16*5*5
+          conv8_2_mbox_loc       Convolution  3*3*256*16  16通道输出   --->  16*5*5      (4种边框 * 4个参数= 16)
           conv8_2_mbox_loc_perm  Permute       0  2  3  1 
           conv8_2_mbox_loc_flat  Flatten       axis: 1  
           
           输入 conv8_2           256*3*3                             
-          conv8_2_mbox_conf      Convolution   3*3*16*84  84通道输出   --->  84*5*5
+          conv8_2_mbox_conf      Convolution   3*3*16*84  84通道输出   --->  84*5*5       (4种边框*21类=84) 
           conv8_2_mbox_conf_perm Permute       0  2  3  1
           conv8_2_mbox_conf_flat Flatten       axis: 1
           
@@ -298,11 +307,11 @@ somtmax 指数映射回归分类
                         
 6.    本层 预测框数量 1*1*4   
           输入 conv9_2           256*1*1         
-          conv9_2_mbox_loc       Convolution   3*3*256*16  16通道输出   --->  16*1*1
+          conv9_2_mbox_loc       Convolution   3*3*256*16  16通道输出   --->  16*1*1   (4种边框 * 4个参数= 16)
           conv9_2_mbox_loc_perm  Permute       0  2  3  1 
           conv9_2_mbox_loc_flat  Flatten       axis: 1  
           
-          conv9_2_mbox_conf      Convolution   3*3*16*84  84通道输出   --->  84*1*1
+          conv9_2_mbox_conf      Convolution   3*3*16*84  84通道输出   --->  84*1*1    (4种边框*21类=84)  
           conv9_2_mbox_conf_perm Permute  
           conv9_2_mbox_conf_flat Flatten
           

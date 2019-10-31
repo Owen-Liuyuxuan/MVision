@@ -1,3 +1,13 @@
+# opencv项目
+      背景去除  BackgroundSubtraction
+      级联回归人脸笑脸检测  Cascade
+      车道线和交通标志检测  LaneMarkings_TrafficSigns_Detection 
+      道路标线检测    Lane_detection 
+      行人检测        PedestrianDetection
+      交通灯检测      TrafficLightDetection
+      车辆检测跟踪记录 Vehicle-Det-Trac-Count
+      基于 特征匹配单应变换的实时 3D物体跟踪  real_time_pose_estimation
+
 # 纹理对象的实时姿态估计
 
 ## 【1】 ply格式数据 储存立体扫描结果的三维数值

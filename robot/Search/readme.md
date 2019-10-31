@@ -1,8 +1,103 @@
-# 路径规划
+# 规划 motion planning trajectory planning 
+![](https://images2015.cnblogs.com/blog/710098/201604/710098-20160417134850410-1505250729.png)
+
+    机器人技术的一个基本需求是拥有将人类任务的 高级规范 转换 为 如何移动 的 低级描述的算法。
+    
+    运动规划 和 轨迹规划
+    
+    机器人运动规划通常忽略动力学和其他差异约束，主要关注 移动目标 所需的平移和旋转。
+        然而，最近的工作确实考虑了其他方面，例如不确定性，差异约束，建模误差和最优性。
+        
+    轨迹规划通常指的是从机器人运动规划算法中获取解决方案并确定如何以尊重机器人的机械限制的方式移动解决方案的问题。
+    
+    A. 运动规划 motion planning
+        在连续状态空间中进行规划”Planning in Continuous State Spaces
+        
+        1. 几何表示和转换 Geometric Representations and Transformations
+           给出了表达运动规划问题的重要背景。 
+           如何构建几何模型，其余部分说明了如何转换它们。
+           
+        2. 配置空间 Configuration Space
+           介绍拓扑中的概念，并使用它们来表示配置空间，即运动规划中出现的状态空间。
+           
+        3.基于采样的运动规划Sampling-Based Motion Planning
+           近年来在文献中占主导地位的运动规划算法，并已应用于机器人内外的领域。
+           如果您了解配置空间代表连续状态空间的基本思想，那么大多数概念都应该是可以理解的。
+           除了运动规划和机器人技术之外，它们甚至适用于出现连续状态空间的其他问题。
+           
+        4. 组合运动规划Combinatorial Motion Planning
+           有时称为精确算法，因为它们构建离散表示而不会丢失任何信息。
+           它们是完整的，这意味着如果存在，它们必须找到解决方案;否则，它们会报告失败。
+           基于抽样的算法在实践中更有用，但它们只能实现较弱的完整性概念。
+           
+        5. 基本运动规划的扩展 Extensions of Basic Motion Planning
+           封闭运动链的规划;
+           
+        6. 反馈运动规划 Feedback Motion Planning
+           一个过渡性章节，将 反馈 引入 运动规划问题，但仍未引入 差异约束
+           侧重于计算开环规划，这意味着规划执行期间可能发生的任何错误都会被忽略
+           使用反馈产生闭环规划，该规划在执行期间响应不可预测的事件。
+           
+    B.决策理论规划Decision-Theoretic Planning
+        在不确定性下进行规划Planning Under Uncertainty。
+        大部分涉及离散状态空间discrete state spaces，
+        但是，有些部分涵盖了连续空间的扩展;
+        1. 基本决策理论Basic Decision Theory
+           主要思想是为面临其他决策者干预的决策者设计最佳决策。
+           其他人可能是游戏中真正的对手，也可能是虚构的，以模拟不确定性model uncertainties.
+           侧重于一步做出决定，并为第三部分提供构建模块，因为在不确定性下的计划可被视为多步决策 multi-step decision making。
+           
+        2. 顺序决策理论Sequential Decision Theory
+           通过将一系列基本决策问题链接在一起来扩展它们。
+           动态编程Dynamic programming 概念在这里变得很重要。
+           假设当前状态始终是已知的。存在的所有不确定性都与预测未来状态有关，而不是测量当前状态。
+           
+        3. 传感器和信息空间Sensors and Information Spaces
+           一个框架，用于在执行期间当前状态未知时进行规划。
+           关于状态的信息是从传感器观察 和 先前应用的动作的记忆中获得的。
+           信息空间服务类似检测不确定性问题的目的，因为配置空间具有运动规划。
+           
+        4. 感知不确定性下的规划Planning Under Sensing Uncertainty
+           介绍了涉及感知不确定性的几个规划问题和算法。
+           这包括定位localization，地图构建 map building，pursuit-evasion跟踪? 和 操作 等问题。
+           所有这些问题都是在信息空间规划的思想下统一起来的.
+           
+     C. 差异约束下的规划Planning Under Differential Constraints
+        这里，在运动规划中出现的连续状态空间上可能存在全局（障碍）和局部（差分）约束。
+        还考虑动态系统，其产生包括位置和速度信息的状态空间（这与控制理论中的状态空间或物理和微分方程中的相空间的概念一致）。
+        1. 差分模型Differential Models
+           介绍涉及差异约束的众多模型，
+           包括车轮滚动产生的约束 以及 机械系统 动力学 产生的约束。
+           
+        2. 差分约束下的基于抽样的规划 Sampling-Based Planning Under Differential Constraints
+           所有方法都是基于采样的，因为在差分约束的情况下，组合技术很少能实现。
+           
+        3. 系统理论和分析技术System Theory and Analytical Techniques
+          概述了主要在控制理论文献中开发的概念和工具,
+          通常在差分约束下开发规划算法时提供重要的见解或组成部分。
+     
+     
+     
+     
+           
+
 [Moving AI Lab](https://movingai.com/)
 
 [A* and D* c++代码](https://github.com/Ewenwan/Path-Planning)
 
+[机器人学 —— 轨迹规划（Introduction）](https://www.cnblogs.com/ironstark/p/5400998.html)
+
+[机器人学 —— 轨迹规划（Configuration Space） A* 或者 DJ 算法 ](https://www.cnblogs.com/ironstark/p/5537270.html)
+
+[机器人学 —— 轨迹规划（Sampling Method 采样的方法） 基于采样的轨迹规划算法。PRM(probabilistic road map)。使用PRM生成稀疏的路径图，再利用A*算法在路径图中进行轨迹规划，则可以显著提高效率 ](https://www.cnblogs.com/ironstark/p/5537323.html)
+
+[机器人学 —— 轨迹规划（Artificial Potential 人工势场）](https://www.cnblogs.com/ironstark/p/5544164.html)
+
+[A*](http://mnemstudio.org/path-finding-a-star.htm)
+
+[Q-Learning Q-learning 强化学习](http://mnemstudio.org/path-finding-q-learning.htm)
+
+[Q-learning, 动态规划](http://antkillerfarm.github.io/ml/2017/08/31/Machine_Learning_27.html)
 
 [一本圣经《Planning Algorithms》伊利诺伊大学教授Lavalle于2006年写的这本书](http://planning.cs.uiuc.edu/booka4.pdf)
 
@@ -87,8 +182,21 @@
 # 0.2 广度优先寻路算法
 
 # 1. Dijstra 迪杰斯特拉  
+[维基百科](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
 
 # 2. A* A星算法  
+
+ 
+Dijkstra算法和A*算法都是最短路径问题的常用算法，下面就对这两种算法的特点进行一下比较。
+
+    1.Dijkstra算法计算源点到其他所有点的最短路径长度，A*关注点到点的最短路径(包括具体路径)。
+    2.Dijkstra算法建立在较为抽象的图论层面，A*算法可以更轻松地用在诸如游戏地图寻路中。
+    3.Dijkstra算法的实质是广度优先搜索，是一种发散式的搜索，所以空间复杂度和时间复杂度都比较高。
+      对路径上的当前点，A*算法不但记录其到源点的代价，还计算当前点到目标点的期望代价，
+      是一种启发式算法，也可以认为是一种深度优先的算法。
+    4.由第一点，当目标点很多时，A*算法会带入大量重复数据和复杂的估价函数，
+      所以如果不要求获得具体路径而只比较路径长度时，Dijkstra算法会成为更好的选择
+
 
 # 3. Theta*
 

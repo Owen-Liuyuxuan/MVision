@@ -220,18 +220,20 @@ namespace ORB_SLAM2
 	    if(sensor==System::STEREO || sensor==System::RGBD)
 	    {
 	       // 判断一个3D点远/近的阈值 mbf * 35 / fx
+               //  b * f * ThDepth /fx = b * ThDepth === 为相机的最大测量范围
 		mThDepth = mbf*(float)fSettings["ThDepth"]/fx;//深度 阈值
 		cout << endl << "深度图阈值 Depth Threshold (Close/Far Points): " << mThDepth << endl;
 	    }	    
 	    // 深度相机
 	    if(sensor==System::RGBD)
 	    {
-	        // 深度相机disparity 视差 转化为 深度 depth时的因子
+	        // 深度相机 深度数据缩放  因子 
 		mDepthMapFactor = fSettings["DepthMapFactor"];//地图深度 因子
 		if(fabs(mDepthMapFactor)<1e-5)
 		    mDepthMapFactor=1;
 		else
-		    mDepthMapFactor = 1.0f/mDepthMapFactor;
+		    mDepthMapFactor = 1.0f/mDepthMapFactor;// 毫米 变成 米 深度数据缩放  因子 
+		    // depth深度图的值为真实3d点深度 * DepthMapFactor
 	    }
 
 	}
@@ -480,6 +482,27 @@ LocalMap包含：
  *
  * Tracking 线程
  */
+	
+/*
+完整跟踪：
+         1. 系统开始前两帧用来初始化（单目/双目/RGBD）
+         2. 后面两帧之间的跟踪
+                     a. 建图+定位模式
+                           检查并更新上一帧
+                           正常：跟踪参考帧 / 跟踪上一帧(运动模式)
+                           丢失：重定位
+                     b. 仅定位模式
+                           丢失：重定位
+                           正常：
+                                跟踪的点较多： 跟踪参考帧 / 跟踪上一帧(运动模式)
+                                跟踪的点少  ： 运动模式/重定位模式
+         3. 局部地图跟踪( 小回环优化)
+                     局部地图根系，更新速度模型，清除当前帧中不好的点，检查创建关键帧
+         4. ----> 局部建图----->回环检测
+
+*/
+	
+	
 	void Tracking::Track()
 	{
 // track包含两部分：估计运动(前后两帧的运动变换矩阵)、 跟踪局部地图(在地图中定位)

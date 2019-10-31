@@ -9,6 +9,10 @@
 
 [CVPR 2014 Tutorial on Emerging Topics in Human Activity Recognition](http://michaelryoo.com/cvpr2014tutorial/)
 
+[1Deep Learning for Video Classification and Captioning](https://arxiv.org/pdf/1609.06782.pdf)
+
+[卷积方式探索 3d 2.5d 混合卷积](https://arxiv.org/pdf/1708.05038.pdf)
+
 # 行为检测 Action Detection                            类似图像目标检测
     但在现实应用中更容易遇到的情况是序列尚未在时域分割（Untrimmed），
     因此需要同时对行为动作进行时域定位（分割）和类型判定，这类任务一般称为行为检测。
@@ -162,7 +166,17 @@
         a. 使用SURF特征算法匹配前后两帧的 匹配点对，这里会使用人体检测，剔除人体区域的匹配点，运动量大，影响较大；
         b. 利用光流算法计算匹配点对，剔除人体区域的匹配点对；
         c. 合并SURF匹配点对 和 光流匹配点对，利用RANSAC 随机采样序列一致性算法估计前后两帧的 单应投影变换矩阵H;
+        
         d. 利用矩阵H的逆矩阵，计算得到当前帧除去相机运动的状态I’= H.inv * I ；
+             如果已知 两帧 T=[R,t] 变换
+             Ik = K *P
+             Ik+1 = K *T*P
+             K逆 * Ik = T逆 *K逆 * Ik+1
+             
+             I’ = K * T逆 *K逆 * I
+             
+        
+        
         e. 计算去除相机运动后的帧I' 的 光流。
         f. 光流算法 Ft
            假设1：光照亮度恒定：

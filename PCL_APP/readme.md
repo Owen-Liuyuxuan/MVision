@@ -1,4 +1,8 @@
 # 机器人三维视觉
+
+[三维计算机视觉  pcl 滤波分割聚类关键点 深度学习 点云卷积网络](https://www.cnblogs.com/ironstark/category/759418.html)
+ 
+[GeometryHub(几何空间) 点云处理库 ](http://geometryhub.net/myspace)
 ## 使用PCL点云库
 
 
@@ -17,7 +21,7 @@
 
         sudo apt-get install　build-essential　libboost-all-dev　
 
-        sudo apt-get install libvtk5-dev 
+        sudo apt-get install libvtk5-dev libopenni-dev
 
         Vtk，（visualization toolkit 可视化工具包）是一个开源的免费软件系统，
         教程　http://blog.csdn.net/www_doling_net/article/details/8763686

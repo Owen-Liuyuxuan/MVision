@@ -39,14 +39,56 @@
         
         8. 高性能计算 HighPerformanceComputing
 
+![](https://img-blog.csdn.net/20160818141025738)
+
+
+# 深度学习目标检测 
+![](https://raw.githubusercontent.com/hoya012/deep_learning_object_detection/master/assets/deep_learning_object_detection_history.PNG)
+
+[参考](https://github.com/Ewenwan/deep_learning_object_detection)
+
+发展
+
+![](https://github.com/Ewenwan/MVision/blob/master/od.png)
+
+
+[目标检测相关论文笔记](https://github.com/Ewenwan/windy-afternoon/tree/master/ml/papers/detection)
+
 # 卷积神经网络
+[one-stage two-stage目标检测总结](https://zsc.github.io/megvii-pku-dl-course/slides/Lecture6(Object%20Detection).pdf)
+
+[2d目标检测网络各种结构代码](https://github.com/Ewenwan/awesome-object-detection)
+
+
+[Deep Learning (Computer Architecture) 计算框架 caffe pytorch](https://zsc.github.io/megvii-pku-dl-course/slides18/deeplearning_framework_peking.pdf)
+
+[深度学习数学知识 向量 矩阵 概率密度函数 贝叶斯 协方差 信息熵 KL散度 梯度下降 过拟合 正则化](https://zsc.github.io/megvii-pku-dl-course/slides/Lecture2(MathInDL).pdf)
+
+[ssd/mobile ssd/yolo v2/yolo v3 implement in opencv3 ](https://github.com/Ewenwan/real_time_object_detect)
+
+[nanonets.com 来帮助使用很少的数据和没有计算机硬件的情况下构建机器学习模型 ](https://nanonets.com/#demo)
+
+[facebook目标检测平台 基于caffe2](https://github.com/Ewenwan/Detectron)
+
 [网络模型结构在线可视化](http://ethereon.github.io/netscope/#/editor)
 
 [神经网络代码实验 c++全代码](https://github.com/Ewenwan/NN_Test)
 
 [人脸识别代码实验 c++](https://github.com/Ewenwan/Face_Test)
 
+[OCR 文本检测和识别](https://zsc.github.io/megvii-pku-dl-course/slides/Lecture7(Text%20Detection%20and%20Recognition_20171031).pdf)
+
 [OCR_Test（Optical Character Recognition，光学字符识别）实验代码](https://github.com/Ewenwan/OCR_Test)
+
+[图像分割 实例分割](https://zsc.github.io/megvii-pku-dl-course/slides/Lecture8(Image%20Segmentation).pdf)
+
+[A Review on Deep Learning TechniquesApplied to Semantic Segmentation](https://arxiv.org/pdf/1704.06857.pdf)
+
+[RNN ](https://zsc.github.io/megvii-pku-dl-course/slides/Lecture9%20Recurrent%20Neural%20Networks.pdf)
+
+[gan 生成对抗网络](https://zsc.github.io/megvii-pku-dl-course/slides/Lecture%2010_%20Introduction%20to%20Generative%20Models.pdf)
+
+[光流 单/多目标跟踪](https://zsc.github.io/megvii-pku-dl-course/slides/Lecture%2013_%20Visual%20Object%20Tracking.pdf)
 
 [各种卷积方式](https://github.com/vdumoulin/conv_arithmetic)
 
@@ -197,6 +239,10 @@ If you like this, star it, thanks!
 [中文版](http://noahsnail.com/2017/08/21/2017-8-21-CRNN%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E7%89%88/)
 [中英文对照](http://noahsnail.com/2017/08/21/2017-8-21-CRNN%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E2%80%94%E2%80%94%E4%B8%AD%E8%8B%B1%E6%96%87%E5%AF%B9%E7%85%A7/)
 
+[ocn代码示例](https://github.com/fengbingchun/OCR_Test)
+
+[Use CTC + tensorflow to OCR ](https://github.com/ilovin/lstm_ctc_ocr)
+
 * CTPN  
 [Detecting Text in Natural Image with Connectionist Text Proposal Network](https://arxiv.org/abs/1609.03605)
 [中文版](http://noahsnail.com/2018/02/02/2018-02-02-Detecting%20Text%20in%20Natural%20Image%20with%20Connectionist%20Text%20Proposal%20Network%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E2%80%94%E2%80%94%E4%B8%AD%E6%96%87%E7%89%88/)
@@ -208,5 +254,14 @@ If you like this, star it, thanks!
 To be added.
 
 
+## 迁移学习 Transfer Learning
+[学习资料论文代码](https://github.com/Ewenwan/transferlearning)
 
+[学习手册 视觉文本时序医疗健康 KL散度度量 特征学习 子空间 深度对抗网络 ](http://jd92.wang/assets/files/transfer_learning_tutorial_wjd.pdf)
+
+
+## 人脸识别
+[使用Google的人脸检测API检测情绪-Python](http://blog.topspeedsnail.com/archives/10489)
+
+[使用OpenFace进行人脸识别](http://blog.topspeedsnail.com/archives/10933)
 

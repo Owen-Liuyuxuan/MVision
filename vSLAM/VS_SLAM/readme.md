@@ -1,4 +1,180 @@
 # 深度学习结合SLAM 研究现状总结
+
+[参考 技术刘](http://www.liuxiao.org/2018/08/semantic-slam-%E6%96%87%E7%AB%A0%E6%94%B6%E9%9B%86/)
+
+[语义 SLAM 中的概率数据融合 ](https://www.cis.upenn.edu/~kostas/mypub.dir/bowman17icra.pdf)
+    
+[语义SLAM的概率数据关联 解析（一）简介](https://zhuanlan.zhihu.com/p/39849427)
+
+[上面的论文——融合传统CPM分割语义信息](http://www.liuxiao.org/wp-content/uploads/2018/08/Probabilistic-Data-Association-for-Semantic-SLAM.pdf)
+
+    期望最大化(EM) 估计来把语义 SLAM 转换成概率问题，优化目标仍然是熟悉的重投影误差。
+    这篇文章只用了 DPM 这种传统方法做检测没有用流行的深度学习的检测网络依然取得了一定的效果。
+    当然其文章中有很多比较强的假设，比如物体的三维中心投影过来应该是接近检测网络的中心，
+    这一假设实际中并不容易满足。
+    
+[融合语义分割信息  Visual Semantic Odometry ](http://www.liuxiao.org/wp-content/uploads/2018/08/VSO-Visual-Semantic-Odometry.pdf)
+    
+    既然检测可以融合，把分割结果融合当然是再自然不过的想法，而且直观看来分割有更加细粒度的对物体的划分
+    对于 SLAM 这种需要精确几何约束的问题是更加合适的。
+    ETH 的这篇文章紧随其后投到了今年的 ECCV 2018。
+    这篇文章依然使用 EM 估计，在上一篇的基础上
+    
+    使用 距离变换将分割结果的边缘作为约束，
+    同时依然利用投影误差构造约束条件。
+    
+    在 ORB SLAM2 和 PhotoBundle 上做了验证取得了一定效果。这篇文章引入 距离变换 的思路比较直观，
+    很多人可能都能想到，不过能够做 work 以及做了很多细节上的尝试，依然是非常不容易的。
+    但仍然存在一个问题是，分割的边缘并不代表是物体几何上的边缘，
+    不同的视角这一分割边缘也是不停变化的，因此这一假设也不是非常合理。
+    
+    总目标函数 = 基本的里程计目标函数: + cet*语义匹配目标函数
+    
+    基本的里程计目标函数: 位置i下观测到路标点j的 光度差异（直接法）或者几何差异（间接法，直接法）
+    
+    语义匹配目标函数: 我们要衡量该姿态的相机观测得到的语义分类和地图的语义关系能多好地匹配。
+                   匹配方式则是将地图的点，按照当前相机的姿态，投影到成像平面中（类似BA，只是BA比较的是RGB而已）。
+                   对应成像平面的位置如果分类就是地图中点的分类，那就概率取高，那么如果不是呢,按照距离 给定得分
+                   
+                   判断投影过来的点与正确分类的距离，于是建了这么一张 
+                   距离变换 图（Distance transform ，DT变换图。）来表示，不用再挨个遍历去算。
+                   而概率与距离的关系是用高斯分布建模。
+    
+     这篇文章主要利用语义约束解决（减少）SLAM在重建过程中由于误差累积造成的drift问题。
+     对于自动驾驶场景来说，由于直线道路比较多，所以更明显的改善表现在translational error上，
+     对于rotational error的改善则比较有限。
+     
+     在视觉里程计中，有两种方法来减少drift：一种是使用图像间的短期（short-term）
+     的correspondences在连续帧的图像中建立约束，进而纠正drift;
+     另一种则是通过回环检测（loop closure）在间隔较长的帧中建立长期（long-term）的约束。
+     而VSO则通过利用语义约束对于点的中期（medium-term）的连续跟踪进行drift校正。
+     
+     
+    
+[双目语义3D物体跟踪 ](http://www.liuxiao.org/wp-content/uploads/2018/08/Stereo-Vision-based-Semantic-3D-Object-and-Ego-motion-Tracking-for-Autonomous-Driving.pdf) 
+    
+    港科大沈邵劼老师团队的最新文章，他们的 VINS 在 VIO 领域具有很不错的开创性成果。
+    现在他们切入自动驾驶领域做了这篇双目语义3D物体跟踪的工作，效果还是很不错的。
+    在沈老师看来，SLAM 是一个多传感器融合的框架，RGB、激光、语义、IMU、
+    码盘等等都是不同的观测，所以只要是解决关于定位的问题，SLAM 的框架都是一样适用的。
+    在这篇文章中，他们将不同物体看成不同的 Map，一边重建一边跟踪。
+    使用的跟踪方法仍然是传统的 Local Feature，而 VIO 作为世界坐标系的运动估计。
+    语义融合方面，他们构造了4个优化项.
+    
+    思想和 mask-fuscision 类似，就是把 不同的物体当作 地图对象来进行跟踪和重建。！！！！！
+    
+    
+    
+# 动态 语义 SLAM相关论文
+    
+[DynaSLAM:  Tracking,  Mapping  and  Inpainting  in  Dynamic  Scenes MASK-RCNN语义分割 和多视角集合判断动态点 剔除 动态关键点](https://arxiv.org/pdf/1806.05620.pdf)
+    
+[DynSLAM, Robust  Dense  Mapping  for  Large-Scale  Dynamic  Environments 语义分割&光流 ](http://www.cvlibs.net/publications/Barsan2018ICRA.pdf )
+    
+[DS-SLAM:A Semantic Visual SLAM towards Dynamic Environments 语义分割 & 运动一致性检测 & octomap](https://arxiv.org/pdf/1809.08379.pdf)
+    
+[语义概率数据融合 语义slam](https://www.cis.upenn.edu/~kostas/mypub.dir/bowman17icra.pdf)
+[博客解析](https://blog.csdn.net/crazydogg/article/details/82670046)
+
+[VSO: Visual Semantic Odometry 语义概率数据融合 ](https://demuc.de/papers/lianos2018vso.pdf)
+[知乎论文解析](https://zhuanlan.zhihu.com/p/45689132)
+    
+# 数学描述
+    路标点集合       L = {Lm} m=[1:M]
+    传感器姿态序列    X = {xt} t=[1:T]
+    传感器测量值     Z = {zk} k=[1:K]
+    
+    数据关联        D = {(ak, bk)} k=[1:K]
+                  意义是 地zk次测量下 姿态 x_ak 和 路标点 L_bk 相关联
+    普通硬决策方法：
+                  先求得一个准确的 关联D    D <---arg max  log  p(D|X,L,Z)
+                  取对数，仍然是正相关，[0，1] ---->映射到 [-无穷大,0]
+                  在使用这个关联D  来最大化 Z 得到最优 的 X，L
+                  X，L <------ arg max p(Z|X,L,D)
+    软决策，考虑不确定性：关联D 是由多种状态 叠加而成，是一个叠加状态，薛定鄂的猫
+                  首先考虑所有 可能的 数据关联 D 
+                         计算其数据分布 获得每一种关联 (ak, bk) 对应的概率 wij
+                  在多种数据关联下 最大化 Z
+                          X，L <------ arg max sum(sum( wij * log p(zk|ak, bk)))
+
+
+
+
+[参考](https://www.cnblogs.com/luyb/p/9430488.html)
+    
+    这个问题的关键在于，
+    一幅图像中可能检测出数个相同类别的目标物体，
+    如何能够正确地将其对应于地图数据中已有的该类别的3D物体。
+    
+    下面列出几种有用的因素。
+
+    较为准确的先验估计（姿态），比如通过IMU、GPS、里程计等。
+    能够得到VO和目标的准确位置，比如双目、深度摄像头、结合激光等。
+    地图中有很多（局部）唯一确定的路标物体。
+    考虑所有可能的数据关联。
+
+    利用第一点，我们能够使用一些简单的方法建立数据关联，但此时仍需考虑错误关联的影响。
+
+    利用第二点，我们能够准确地重建出语义目标的几何特性（空间位置、朝向等）。
+              X-View: Graph-Based Semantic Multi-View Localization这篇文章将多帧的语义目标位置组合成图，
+              利用图匹配算法求解相机在全局地图中的位置（只定位不建图）。
+
+    利用第三点，我们能够方便地确定关联关系。比如，行车道上的交通指示牌结合文字OCR识别，
+              能够唯一确定该路牌的位置，相当于一个全局观测。比如，考虑到交通指示牌相互之间的间距很大，
+              在局部唯一，因此结合GPS和指示牌即可唯一确定该指示牌的位置。根据Mobileye的REM的专利描述，它们可能利用了该类信息。  
+
+
+[室内场景数据集 InteriorNet: Mega-scale Multi-sensor Photo-realistic Indoor Scenes Dataset](https://interiornet.org/)
+
+[多场景  数据集1 ](https://projects.asl.ethz.ch/datasets/doku.php?id=weedmap:remotesensing2018weedmap)
+
+[自动驾驶道路数据集 ](http://www.europe.naverlabs.com/Research/Computer-Vision/Proxy-Virtual-Worlds)
+
+[CMU 视觉定位数据集](http://www.europe.naverlabs.com/Research/Computer-Vision/Proxy-Virtual-Worlds)
+
+
+
+# 基于视觉的 语义定位和建图
+
+
+    目标定义:
+           位置 position
+           方向 orientation 表面法线 surface normal 线方向 line direction
+           类别 category
+           大小 size 
+           编号 id
+           连接关系  空间spatial、时间time
+    建图 mapping:
+           目标检测 ： 基于关键帧 、 基于cnn
+           目标跟踪 ： 光流、关键帧上的 2d-2d跟踪、地图中的3d-3d跟踪
+           目标重建 ： 2d检测框 计算3d目标点云、中心点、方向、尺寸、多帧匹配融合、3d目标连接关系
+           地图融合 ： icp配准融合。。。
+           地图应用 ： 
+    定位 localization:
+           地图加载 : 3d语义目标、关键帧 、匹配的3dobjects
+           新关键帧 目标检测 ： 
+           目标级别的数据关联 ：  先验值、概率分布、空间分布、icp
+           跟踪：     2d 物体跟踪，pnp(2d-3d) 更新 和 添加新的目标
+           重定位： 关键帧选择  点/线特征、词带表示向量 物体分布图  数据关联后 全局优化
+           多传感器融合
+           
+           
+# 项目的一般思路。
+[参考](https://www.cnblogs.com/luyb/p/9124950.html)
+
+    1. 前期调研。
+       分析项目的产品化需求，输入输出，软硬件平台，以及相关（开源）算法的初步测试和分析。
+    2. 算法架构设计。
+       根据调研结果，大致确定算法模块的功能和具体实现方法。
+    3. 迭代开发。
+       开发过程中必然会碰到很多预料之外的问题。
+       如果有备案，那么尝试备案方案。如果遇到了原理性的问题，那么要修正和扩展架构。
+    3. 技术储备。
+       开发过程中要时刻注重新技术和新方法的储备。
+
+
+
+
 ## 1. 用深度学习方法替换传统slam中的一个/几个模块： 
                 特征提取，特征匹配，提高特征点稳定性，提取点线面等不同层级的特征点。
                 深度估计
@@ -56,6 +232,9 @@
     
     
 
+[多目标跟踪分割](https://github.com/Ewenwan/MultiSeg)
+
+![](https://github.com/umd-fire-coml/MultiSeg/raw/master/MultiSegDiagram.png)
 
 # 2. Vision Semantic SLAM  视觉分割SLAM   语义SLAM
 [语义SLAM参考](https://github.com/Ewenwan/texs/blob/master/PaperReader/SemanticSLAM/SemanticSLAM.md)
@@ -133,6 +312,15 @@
 
     场景映射 semantic Mapping ：  SLAM定位和建图
     目标检测和场景分割 bject Detection and Semantic Segmentation ： RCNN\YOLO\SSD
+![](https://camo.githubusercontent.com/c9e411d5d66bb1b7d35efc5ff46d5e809aed602d/68747470733a2f2f692e6c6f6c692e6e65742f323031382f30382f31322f356236666431616235643838352e706e67)
+
+    对于机器人来说，理解语义信息和几何信息（点线面等）一样重要。
+    本文构建的环境地图既包含语义上的物体层面的实体，又有点云或者mesh面的几何表达。
+    不仅要知道哪里有东西，还要知道那是什么东西
+    被识别为物体实体的部分和非物体部分要区分开，从而方便得知哪些3D点云是属于同一个物体上的
+    本文在对环境中的物体建模的时候，不需要任何预先已知的三维模型，因为我们要对环境中的物体进行精确的建模，而不是从模型库中寻找相似的代替，就像一把椅子，在现实环境中也或有各种各样的变体
+    构建语义地图的过程是为地图中的实体赋予语义含义的过程
+    本文要同时进行相机定位，物体检测和重构
 
 
         基本框架图如下： 
@@ -174,6 +362,15 @@
           那就是如何把新来的物体与已有的地图中的物体相互关联起来，并更新！
         
 [Meaningful Maps With Object-Oriented Semantic Mapping](https://arxiv.org/pdf/1609.07849.pdf)
+
+
+[CNN (PSPNet) + ORB_SLAM2 语义SLAM](https://github.com/Ewenwan/semantic_slam)
+
+
+[深度学习 YOLO-V3 结合 orb-slam2  语义地图](https://github.com/Ewenwan/orb-slam2_with_semantic_label)
+
+
+[SemSLAM](https://github.com/XunshanMan/SemSLAM)
 
 ## B. 单目 LSD-SLAM + CNN卷积网络物体分割 
 

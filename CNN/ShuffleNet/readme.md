@@ -5,11 +5,13 @@
 
 [tf代码](https://github.com/MG2033/ShuffleNet)
 
-[caffe代码](https://github.com/farmingyard/ShuffleNet)
+[caffe代码](https://github.com/Ewenwan/ShuffleNet-1)
 
 [shufflenet-ssd](https://github.com/linchaozhang/shufflenet-ssd)
 
 [预训练的ShuffleNet-cafe模型参数文件](https://github.com/msnqqer/ShuffleNet)
+
+[预训练模型文件 password is "bcj6"](https://pan.baidu.com/s/1eS8NOm2)
 
 ## ResNet 残差网络  结合不同层特征
      ________________________________>

@@ -11,6 +11,13 @@ tag: 深度学习
     尤为突出的是，时下主流的深度神经网络,一般包含数千万甚至是过亿的学习参数，
     而如此海量的参数给神经网络模型在存储、计算和功耗开销等方面带来了严峻的考验。
 
+[DeepCompression-caffe](https://github.com/Ewenwan/DeepCompression-caffe/blob/master/README.md)
+
+[使用Caffe实现，需要加入一个mask来表示剪枝。剪枝的阈值，是该layer的权重标准差乘上某个超参数。有人基于Caffe官方的repo给FC层加上了剪枝](https://github.com/BVLC/caffe/pull/4294/files)
+
+[model-pruning 模型剪枝总结](https://xmfbit.github.io/2018/10/03/paper-summary-model-pruning/#more)
+
+[iccv2019 通道自动搜索剪裁  网络编码 随机搜索 测试性能 进化算法获得最优剪裁方案](https://github.com/Ewenwan/MetaPruning)
 
 # 性能提升方法
 [本文github链接](https://github.com/Ewenwan/MVision/blob/master/CNN/Deep_Compression/readme.md)
@@ -28,6 +35,8 @@ tag: 深度学习
 [4. PVANet: Lightweight Deep Neural Networks for Real-time Object Detection](https://github.com/sanghoon/pva-faster-rcnn) [Code](https://arxiv.org/abs/1611.08588)
 
 ## 2. 模型压缩：参数稀疏、剪裁、量化、分解
+
+[神经网络优化 量化 剪裁](https://github.com/zsc/zsc.github.io/blob/master/Neural%20Network%20Approximation.pdf)
 
 [数据压缩课程 Data Compression ](http://www.ws.binghamton.edu/fowler/fowler%20personal%20page/EE523.htm)
 

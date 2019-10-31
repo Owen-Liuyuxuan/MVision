@@ -1,4 +1,7 @@
+
 [yolo_darknet 转 caffe](https://github.com/Ewenwan/MVision/blob/master/darknect/caffe/yolo_darknet_to_caffe.md)
+
+[详细教程：window下安装Caffe深度学习框架！（同时安装pycaffe）](https://blog.csdn.net/weixin_37621229/article/details/80547934)
 
 # caffe使用
 [caffe 安装](https://github.com/Ewenwan/MVision/blob/master/darknect/caffe/caffe_%E5%AE%89%E8%A3%85.md)
@@ -20,6 +23,10 @@
 [ caffe_简介_使用.md](https://github.com/Ewenwan/MVision/blob/master/darknect/caffe/caffe_%E7%AE%80%E4%BB%8B_%E4%BD%BF%E7%94%A8.md)
 
 [Caffe使用教程_c++接口](https://github.com/Ewenwan/MVision/blob/master/darknect/caffe/Caffe%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B_c%2B%2B%E6%8E%A5%E5%8F%A3.md)
+
+[caffe MobileNet-SSD  Focal-loss ](https://github.com/Ewenwan/MobileNet-SSD-Focal-loss)
+
+[caffe 实现  MobileNet-YOLOv3 ](https://github.com/Ewenwan/MobileNet-YOLO)
 
 [caffe 模型搜集](https://github.com/SnailTyan/caffe-model-zoo)
 ![screenshot](https://user-images.githubusercontent.com/21311442/33640664-cbcbeff2-da6c-11e7-97c8-1ad8d7fdf4c0.png)
@@ -261,6 +268,9 @@ using caffe::Solver;// 作为网络的求解策略，涉及到求解优化问题
 ### gtest 
       google test一个用于测试的库,
       你make runtest时看见的很多绿色RUN OK就是它，这个与caffe的学习无关，不过是个有用的库
+      
+[gtest 使用示例 ](https://github.com/Ewenwan/gtest_min_sample)
+      
 ### caffe 关键的代码都在这里了
       1. test 用gtest测试caffe的代码
       2. util 数据转换时用的一些代码。
